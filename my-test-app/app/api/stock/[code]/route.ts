@@ -1,14 +1,8 @@
 import { getAccessToken } from '@/lib/kis-auth'
+import { StockInfo } from '@/lib/types'
 
 type RouteParams = {
   params: Promise<{ code: string }>
-}
-
-type StockInfo = {
-    code: string
-    currentPrice: number
-    changeAmount: number
-    
 }
 
 export const GET = async (
@@ -24,8 +18,8 @@ export const GET = async (
             headers: {
                 'Content-Type': 'application/json',
                 authorization: `Bearer ${token}`,
-                appkey: process.env.KIS_VTS_APP_KEY,
-                appsecret: process.env.KIS_VTS_APP_SECRET,
+                appkey: process.env.KIS_VTS_APP_KEY!,
+                appsecret: process.env.KIS_VTS_APP_SECRET!,
                 tr_id: 'FHKST01010100',
             },
         },
@@ -33,5 +27,13 @@ export const GET = async (
 
     const data = await res.json()
 
-    return Response.json(data)
+    const stockInfo: StockInfo = {
+        code,
+        currentPrice: Number(data.output.stck_prpr),
+        changeAmount: Number(data.output.prdy_vrss),
+        changeRate: Number(data.output.prdy_ctrt),
+        volume: Number(data.output.acml_vol),
+    }
+
+    return Response.json(stockInfo)
 }
