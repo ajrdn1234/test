@@ -1,15 +1,12 @@
+import type { NextRequest } from 'next/server'
 import { getAccessToken } from '@/lib/kis-auth'
 import { StockInfo } from '@/lib/types'
 
-type RouteParams = {
-  params: Promise<{ code: string }>
-}
-
 export const GET = async (
-    request: Request,
-    { params }: RouteParams
+    req: NextRequest,
+    ctx: RouteContext<'/api/stock/[code]'>
 ) => {
-    const { code } = await params
+    const { code } = await ctx.params
     const token = await getAccessToken()
 
     const res = await fetch(
@@ -26,7 +23,6 @@ export const GET = async (
     )
 
     const data = await res.json()
-
     const stockInfo: StockInfo = {
         code,
         currentPrice: Number(data.output.stck_prpr),
@@ -34,6 +30,5 @@ export const GET = async (
         changeRate: Number(data.output.prdy_ctrt),
         volume: Number(data.output.acml_vol),
     }
-
     return Response.json(stockInfo)
 }
