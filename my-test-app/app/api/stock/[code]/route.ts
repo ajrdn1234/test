@@ -1,4 +1,6 @@
 import type { NextRequest } from 'next/server'
+import dayjs from '@/lib/dayjs'
+import { db } from '@/lib/db'
 import { getAccessToken } from '@/lib/kis-auth'
 import { StockInfo } from '@/lib/types'
 
@@ -30,5 +32,11 @@ export const GET = async (
         changeRate: Number(data.output.prdy_ctrt),
         volume: Number(data.output.acml_vol),
     }
+
+    await db.execute({
+        sql: 'INSERT INTO stock_prices (code, price, created_at) VALUES (?, ?, ?)',
+        args: [stockInfo.code, stockInfo.currentPrice, dayjs().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')],
+    })
+
     return Response.json(stockInfo)
 }

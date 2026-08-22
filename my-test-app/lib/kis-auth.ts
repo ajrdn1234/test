@@ -1,10 +1,12 @@
+import dayjs from '@/lib/dayjs'
+
 let cachedToken: string | null = null;
-let cachedTokenExpiresAt: number | null = null;
+let cachedTokenExpiresAt: dayjs.Dayjs | null = null;
 
 export const getAccessToken = async () => {
-    const now = Date.now()
+    const now = dayjs()
 
-    if(cachedToken && cachedTokenExpiresAt && now < cachedTokenExpiresAt) return cachedToken
+    if(cachedToken && cachedTokenExpiresAt && now.isBefore(cachedTokenExpiresAt)) return cachedToken
     
     const res = await fetch(
         'https://openapivts.koreainvestment.com:29443/oauth2/tokenP',
@@ -25,7 +27,7 @@ export const getAccessToken = async () => {
     
     const accessToken: string = data.access_token
     cachedToken = accessToken;
-    cachedTokenExpiresAt = now + (data.expires_in - 60) * 1000;
+    cachedTokenExpiresAt = now.add(data.expires_in - 60, 'second');
 
     return accessToken
 }
