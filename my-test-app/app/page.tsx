@@ -3,9 +3,9 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <div>
-      <Link href='/quote'>조회 페이지</Link>
+      <Link href='/domestic/quote'>국내 주식 조회</Link>
       <br />
-      <Link href='/order'>매수 페이지</Link>
+      <Link href='/overseas/quote'>해외 주식 조회</Link>
     </div>
   )
 }

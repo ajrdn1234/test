@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { StockInfo, USStockInfo } from '@/lib/types'
 
@@ -20,6 +21,7 @@ export default function Quote() {
   return (
     <div>
       {stockInfo ? `삼성전자: ${stockInfo.currentPrice.toLocaleString()}원` : 'Loading...'}
+      <Link href='/domestic/order'>자동 매매 시작</Link>
     </div>
   )
 }

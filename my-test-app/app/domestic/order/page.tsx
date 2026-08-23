@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-export default function Home() {
+export default function Order() {
     const [orderResult, setOrderResult] = useState<string | null>(null)
 
     const buy = async () => {
