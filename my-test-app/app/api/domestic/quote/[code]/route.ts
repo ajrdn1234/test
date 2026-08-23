@@ -6,7 +6,7 @@ import { StockInfo } from '@/lib/types'
 
 export const GET = async (
     req: NextRequest,
-    ctx: RouteContext<'/api/stock/[code]'>
+    ctx: RouteContext<'/api/domestic/quote/[code]'>
 ) => {
     const { code } = await ctx.params
     const token = await getAccessToken()

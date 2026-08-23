@@ -25,7 +25,7 @@ export const POST = async () => {
     }
   )
 
-  const buyOrder = await res.json()
+  const start = await res.json()
   
-  return Response.json(buyOrder)
+  return Response.json(start)
 }

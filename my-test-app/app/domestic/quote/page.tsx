@@ -9,7 +9,7 @@ export default function Quote() {
   // const [usStockInfo, setUSStockInfo] = useState<USStockInfo | null>(null)
 
   useEffect(() => {
-    fetch('/api/stock/005930')
+    fetch('/api/domestic/quote/005930')
     .then((res) => res.json())
     .then((data) => setStockInfo(data))
 
