@@ -1,26 +1,40 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { StockInfo, USStockInfo } from '@/lib/types'
+import { useEffect, useRef, useState } from 'react'
+import { CandlestickSeries, createChart } from 'lightweight-charts'
+import { MinuteQuoteResponse } from '@/lib/types'
 
 export default function Quote() {
-  const [stockInfo, setStockInfo] = useState<StockInfo | null>(null)
-  // const [usStockInfo, setUSStockInfo] = useState<USStockInfo | null>(null)
+  const [minuteQuoteResponse, setMinuteQuoteResponse] = useState<MinuteQuoteResponse | null>(null)
+  const chartContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     fetch('/api/domestic/quote/005930')
     .then((res) => res.json())
-    .then((data) => setStockInfo(data))
-
-    // fetch('/api/us-stock/AAPL')
-    // .then((res) => res.json())
-    // .then((data) => setUSStockInfo(data))
+    .then((data) => setMinuteQuoteResponse(data))
   }, [])
+
+  useEffect(() => {
+    if(!minuteQuoteResponse || !chartContainerRef.current) return
+
+    const chart = createChart(chartContainerRef.current, {
+      width: chartContainerRef.current.clientWidth,
+      height: 400,
+    })
+
+    const chartSerise = chart.addSeries(CandlestickSeries)
+    chartSerise.setData(minuteQuoteResponse.minuteQuoteItems)
+
+    return () => chart.remove()
+  }, [minuteQuoteResponse])
+
+  if(!minuteQuoteResponse) return <p>Loading...</p>
 
   return (
     <div>
-      {stockInfo ? `삼성전자: ${stockInfo.currentPrice.toLocaleString()}원` : 'Loading...'}
+      <p>삼성전자: {minuteQuoteResponse.currentPrice.toLocaleString()}원</p>
+      <div ref={chartContainerRef} />
       <Link href='/domestic/order'>자동 매매 시작</Link>
     </div>
   )
