@@ -1,0 +1,14 @@
+name: Auto Trade Execute
+
+on:
+  schedule:
+    - cron: "* * * * *"
+  workflow_dispatch:
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call execute API
+        run: |
+          curl -X POST https://test-kappa-two-98.vercel.app/api/domestic/order/execute
