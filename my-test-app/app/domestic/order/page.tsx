@@ -3,24 +3,37 @@
 import { useState } from 'react'
 
 export default function Order() {
-    const [start, setStart] = useState<string | null>(null)
+    const [result, setResult] = useState<string | null>(null)
+    const [isRunning, setIsRunning] = useState(false)
 
-    const buy = async () => {
-        setStart('주문 중...')
+    const start = async () => {
+        setResult('시작 중...')
 
         const res = await fetch('/api/domestic/order/start', {
             method: 'POST',
         })
         const data = await res.json()
 
-        if(data.rt_cd === '0') setStart(`매수 성공! 주문번호: ${data.output.ODNO}`)
-        else setStart(`매수 실패: ${data.msg1}`)
+        setResult(`자동 매매 시작 (세션 ID: ${data.tradeId} 시작가: ${data.startPrice.toLocaleString()}원)`)
+        setIsRunning(true)
+    }
+
+    const stop =  async () => {
+        setResult('중지 중...')
+
+        const res = await fetch('/api/domestic/order/stop', {
+            method: 'POST',
+        })
+        const data = await res.json()
+
+        setResult(`자동 매매 중지 (변경된 세션 수: ${data.updatedRows})`)
+        setIsRunning(false)
     }
 
     return (
         <div>
-            <button onClick={buy}>주식 매수</button>
-            {start && <p>{start}</p>}
+            {!isRunning ? <button onClick={start}>자동 매매 시작</button> : <button onClick={stop}>자동 매매 중지</button>}
+            {result && <p>{result}</p>}
         </div>
     )
 }
