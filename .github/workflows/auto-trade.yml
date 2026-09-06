@@ -2,9 +2,8 @@ name: Auto Trade Execute
 
 on:
   schedule:
-    - cron: "* * * * *"
+    - cron: "*/5 * * * *"
       timezone: 'Asia/Seoul'
-  # workflow_dispatch:
 
 jobs:
   execute:
