@@ -24,7 +24,7 @@ export default function Order() {
             })
             const execData = await execRes.json()
             setResult(`현재가: ${execData.currentPrice?.toLocaleString()}원, riseCount: ${execData.riseCount}, action: ${execData.action ?? "없음"}`)
-        }, 60 * 1000)
+        }, 2000)
     }
 
     const stop =  async () => {
