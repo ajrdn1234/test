@@ -1,0 +1,14 @@
+-- CreateTable
+CREATE TABLE "TradeState" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "isExecuting" BOOLEAN NOT NULL DEFAULT false,
+    "holding" BOOLEAN NOT NULL DEFAULT false
+);
+
+-- CreateTable
+CREATE TABLE "TradeLog" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "price" INTEGER NOT NULL,
+    "action" TEXT,
+    "collectedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
