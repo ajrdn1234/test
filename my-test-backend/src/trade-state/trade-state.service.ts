@@ -15,7 +15,7 @@ export class TradeStateService {
         })
     }
 
-    async update(id: number, data: { isExecuting?: boolean; isHolding?: boolean }) {
+    async update(id: number, data: { isExecuting?: boolean; holding?: boolean }) {
         return this.prisma.tradeState.update({
             where: { id },
             data,
