@@ -5,9 +5,9 @@ import { QuoteService } from './quote.service.js'
 export class QuoteController {
     constructor(private readonly quoteService: QuoteService) {}
 
-    @Get(':market')
-    async getQuote(@Param('market') market: string) {
-        const price = await this.quoteService.getCurrentPrice(market)
-        return { market, price }
+    @Get()
+    async getQuote() {
+        const price = await this.quoteService.getCurrentPrice()
+        return { price }
     }
 }

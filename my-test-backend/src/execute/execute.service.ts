@@ -4,7 +4,6 @@ import { QuoteService } from '../quote/quote.service.js'
 import { TradeStateService } from '../trade-state/trade-state.service.js'
 import { TradeLogService } from '../trade-log/trade-log.service.js'
 
-const MARKET = 'KRW-BTC'
 const WINDOW_SIZE = 60
 const TREND_THRESHOLD = 0
 
@@ -38,7 +37,7 @@ export class ExecuteService {
         await this.tradeStateService.update(state.id, { isExecuting: true })
 
         try {
-            const currentPrice = await this.quoteService.getCurrentPrice(MARKET)
+            const currentPrice = await this.quoteService.getCurrentPrice()
 
             const recentLogs = await this.tradeLogService.getRecent(WINDOW_SIZE - 1)
             const prices = [...recentLogs.map((log) => log.price), currentPrice]
